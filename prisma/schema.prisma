@@ -1,0 +1,189 @@
+// Prisma Schema for Crop Doctor AI
+// Database: SQLite (easy to start, can migrate to PostgreSQL later)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User model
+model User {
+  id            String      @id @default(cuid())
+  email         String      @unique
+  name          String
+  phone         String?
+  farmLocation  String?
+  landSize      Float?
+  landUnit      String?     // "acre", "hectare", "bigha"
+  crops         String?     // JSON array of crops
+  language      String      @default("en")
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  detections    Detection[]
+  @@index([email])
+}
+
+// Detection/Analysis model
+model Detection {
+  id                String   @id @default(cuid())
+  userId            String?
+  user              User?    @relation(fields: [userId], references: [id])
+  
+  // Image data
+  imagePath         String
+  imageSize         Int?
+  
+  // Analysis results
+  crop              String
+  disease           String
+  severity          String   // "mild", "moderate", "severe", "healthy"
+  confidence        String   // "high", "medium", "low"
+  description       String
+  
+  // Recommendations (JSON)
+  symptoms          String   // JSON array
+  treatments        String   // JSON array
+  prevention        String   // JSON array
+  organicSolutions  String   // JSON array
+  
+  // Fertilizer recommendations
+  fertilizers       String   // JSON array of fertilizer objects
+  
+  // Location data
+  latitude          Float?
+  longitude         Float?
+  location          String?
+  
+  // Weather at time of detection
+  temperature       Float?
+  humidity          Float?
+  weatherCondition  String?
+  
+  // Metadata
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([crop])
+  @@index([disease])
+  @@index([createdAt])
+}
+
+// Fertilizer model (for marketplace)
+model Fertilizer {
+  id                String   @id @default(cuid())
+  name              String
+  type              String   // "organic", "chemical", "bio-fertilizer"
+  npkRatio          String?
+  description       String
+  
+  // Pricing
+  governmentPrice   Float?
+  marketPrice       Float
+  unit              String   // "per 50kg bag", "per kg", etc.
+  
+  // Application details
+  dosage            String
+  applicationMethod String
+  frequency         String
+  
+  // Benefits and precautions (JSON)
+  benefits          String   // JSON array
+  precautions       String   // JSON array
+  
+  // Availability
+  availability      String   // "high", "medium", "low"
+  inStock           Boolean  @default(true)
+  
+  // Suitable for
+  suitableFor       String   // JSON array of crops/diseases
+  
+  // Metadata
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  @@index([type])
+  @@index([name])
+}
+
+// Disease Information model
+model DiseaseInfo {
+  id                String   @id @default(cuid())
+  name              String   @unique
+  crop              String
+  category          String   // "fungal", "bacterial", "viral", "pest", "nutrient_deficiency"
+  
+  // Description
+  description       String
+  symptoms          String   // JSON array
+  causes            String   // JSON array
+  
+  // Treatment
+  treatments        String   // JSON array
+  prevention        String   // JSON array
+  organicSolutions  String   // JSON array
+  
+  // Recommended fertilizers
+  recommendedFertilizers String // JSON array of fertilizer IDs
+  
+  // Severity and spread
+  severity          String   // "low", "medium", "high"
+  spreadRate        String   // "slow", "moderate", "fast"
+  
+  // Seasonal information
+  commonSeasons     String   // JSON array
+  
+  // Images
+  referenceImages   String?  // JSON array of image URLs
+  
+  // Metadata
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  @@index([crop])
+  @@index([category])
+}
+
+// Weather Log model
+model WeatherLog {
+  id                String   @id @default(cuid())
+  location          String
+  latitude          Float
+  longitude         Float
+  
+  temperature       Float
+  humidity          Float
+  rainfall          Float?
+  windSpeed         Float?
+  condition         String
+  
+  // Disease risk assessment
+  diseaseRisk       String?  // "low", "medium", "high"
+  riskFactors       String?  // JSON array
+  
+  timestamp         DateTime @default(now())
+  
+  @@index([location])
+  @@index([timestamp])
+}
+
+// User Feedback model
+model Feedback {
+  id                String   @id @default(cuid())
+  userId            String?
+  detectionId       String?
+  
+  rating            Int      // 1-5
+  comment           String?
+  wasAccurate       Boolean?
+  
+  createdAt         DateTime @default(now())
+  
+  @@index([userId])
+  @@index([detectionId])
+}
