@@ -56,8 +56,8 @@ export default function DiseaseAnalysis({ image, analysis, loading, onReset, onS
 
   return (
     <main className={`min-h-screen pt-6 pb-12 px-4 ${isDarkMode
-        ? 'agriculture-bg-dark agriculture-pattern-dark'
-        : 'agriculture-bg-light agriculture-pattern'
+      ? 'agriculture-bg-dark agriculture-pattern-dark'
+      : 'agriculture-bg-light agriculture-pattern'
       }`}>
       <div className="max-w-2xl mx-auto">
         {/* Language Selector */}
@@ -151,8 +151,8 @@ export default function DiseaseAnalysis({ image, analysis, loading, onReset, onS
             {/* Prevention Tips with Voice */}
             {analysis.prevention && (
               <Card className={`shadow-md p-6 ${isDarkMode
-                  ? 'bg-green-900/40 border border-green-700/50'
-                  : 'bg-green-50 border border-green-200'
+                ? 'bg-green-900/40 border border-green-700/50'
+                : 'bg-green-50 border border-green-200'
                 }`}>
                 <div className="flex items-center justify-between mb-3">
                   <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
@@ -174,8 +174,8 @@ export default function DiseaseAnalysis({ image, analysis, loading, onReset, onS
             {/* Fertilizer Recommendations */}
             {analysis.fertilizers && analysis.fertilizers.length > 0 && (
               <Card className={`shadow-md p-6 ${isDarkMode
-                  ? 'bg-gradient-to-br from-amber-900/30 to-orange-900/30 border border-amber-700/50'
-                  : 'bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200'
+                ? 'bg-gradient-to-br from-amber-900/30 to-orange-900/30 border border-amber-700/50'
+                : 'bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200'
                 }`}>
                 <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-gray-900'
                   }`}>
@@ -185,8 +185,8 @@ export default function DiseaseAnalysis({ image, analysis, loading, onReset, onS
                 <div className="space-y-4">
                   {analysis.fertilizers.map((fertilizer: any, idx: number) => (
                     <Card key={idx} className={`p-4 ${isDarkMode
-                        ? 'bg-green-900/40 border border-amber-700/30'
-                        : 'bg-white border border-amber-100'
+                      ? 'bg-green-900/40 border border-amber-700/30'
+                      : 'bg-white border border-amber-100'
                       }`}>
                       <div className="flex items-start justify-between mb-2">
                         <div>
@@ -203,8 +203,8 @@ export default function DiseaseAnalysis({ image, analysis, loading, onReset, onS
                           )}
                         </div>
                         <span className={`text-xs px-2 py-1 rounded ${fertilizer.availability === 'high' ? 'bg-green-100 text-green-800' :
-                            fertilizer.availability === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                              'bg-red-100 text-red-800'
+                          fertilizer.availability === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-red-100 text-red-800'
                           }`}>
                           {fertilizer.availability} availability
                         </span>
